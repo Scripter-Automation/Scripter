@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-      <Link href="/demo">
+      <Link href="demo">
         <a>demo</a>
       </Link>
      </main>
