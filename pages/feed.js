@@ -6,18 +6,29 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth'
-import { getAuth, signOut } from 'firebase/auth'
-import Image from 'next/image'
+import PostBar from '../Components/Posts/PostBar'
+import AddBar from '../Components/Advertisments/AddBar'
+import {Grid, Box} from "@mui/material"
 
-const Demo = () => {
+const Feed = () => {
   const AuthUser = useAuthUser()
   //console.log(AuthUser)
   return (
-    <div>
-        
-      <p>Your email is {AuthUser.email ? AuthUser.email : 'unknown'}.</p>
-      <button onClick={()=>{signOut(getAuth())}}>Logout</button>
-    </div>
+    <Grid container>
+      <Grid item xs={12} md={8}>
+        <PostBar></PostBar>
+      </Grid>
+      <Box
+        sx={{ml:3}}
+        component={Grid}
+        item
+        xs={0}
+        md={3}
+        display={{ xs: "none", md: "block" }}
+      >
+        <AddBar></AddBar>
+      </Box>
+    </Grid>
   )
 }
 
@@ -32,4 +43,4 @@ export const getServerSideProps = withAuthUserTokenSSR({
 
 export default withAuthUser({
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
-})(Demo)
+})(Feed)

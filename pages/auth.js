@@ -5,7 +5,8 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/app'
 import { EmailAuthProvider, getAuth, GoogleAuthProvider } from "firebase/auth";
 import { AuthAction, withAuthUser } from 'next-firebase-auth';
-import { GenerateRole } from '../Firebase/Dbfirestore';
+import { GenerateRole, getRole } from '../Firebase/FBRoles';
+import { getCookie, setCookies } from 'cookies-next';
 
 
 // Note that next-firebase-auth inits Firebase for us,
@@ -32,11 +33,17 @@ const firebaseAuthConfig = {
       // Don't automatically redirect. We handle redirects using
       // `next-firebase-auth`.
       
-      console.log(authResults);
       const userInfo = authResults.additionalUserInfo;
       if(userInfo.isNewUser){
-        console.log("run", authResults.user)
-        GenerateRole(authResults.user)
+        alert("Gracias por crear una cuenta con nosotros. Esperamos que disfrutes de tu experiencia");
+        GenerateRole(authResults.user);
+      }
+      console.log(getCookie("role"), getCookie("role") === undefined)
+
+      if(getCookie("role") === undefined){
+
+        const role = getRole(authResults.user);
+        setCookies("role", role)
       }
 
       return false

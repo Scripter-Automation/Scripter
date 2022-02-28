@@ -13,9 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-      <Link href="/demo">
-        <a>demo</a>
-      </Link>
+        <h1>Landing Page Comming Soon</h1>
      </main>
     </div>
   )
