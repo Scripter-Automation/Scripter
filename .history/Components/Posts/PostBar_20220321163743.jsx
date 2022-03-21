@@ -61,7 +61,7 @@ export default function PostBar() {
       const image = downloaded;
      
       setpostData({...postData, Image:image })
-      setDownloaded(undefined)
+
     }
     else if (type === "Video") {
       
@@ -70,7 +70,6 @@ export default function PostBar() {
       const video = downloaded; 
 
       setpostData({...postData, Video:video})
-      setDownloaded(undefined)
   }}
 
   const SubmitHandler = (e)=>{

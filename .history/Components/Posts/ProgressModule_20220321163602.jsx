@@ -3,7 +3,7 @@ import {Modal, Typography} from "@mui/material"
 import { Box } from '@mui/system'
 
 
-export default function ProgressModule(props) {
+export default function ProgressModule(props, {progress}) {
 
     const style = {
         position: 'absolute',
@@ -20,13 +20,14 @@ export default function ProgressModule(props) {
   
 
 
- if(props.progress !== 0){
+ if(progress !== 0){
+     console.log("its here")
     return(
         <Modal
         open={true}
         >
         <Box sx={style}>
-        <Typography>Progress:{props.progress}</Typography>
+        <Typography>{progress}</Typography>
         </Box>
         </Modal>
     )

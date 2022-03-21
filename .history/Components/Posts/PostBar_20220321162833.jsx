@@ -9,8 +9,9 @@ import { getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/sto
 import { getDownloadURL } from "firebase/storage";
 
 export default function PostBar() {
+  const [response, setResponse] = useState(undefined)
 
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(undefined)
 
   const [postData, setpostData] = useState({
     Text:undefined,
@@ -58,19 +59,20 @@ export default function PostBar() {
       
       await Upload(e.target.files[0])
 
-      const image = downloaded;
+      const image = response
      
       setpostData({...postData, Image:image })
-      setDownloaded(undefined)
+      setResponse(undefined)
+
     }
     else if (type === "Video") {
       
       await Upload(e.target.files[0])
 
-      const video = downloaded; 
+      const video = response 
 
       setpostData({...postData, Video:video})
-      setDownloaded(undefined)
+      setResponse(undefined)
   }}
 
   const SubmitHandler = (e)=>{
@@ -79,6 +81,13 @@ export default function PostBar() {
 
    
     
+  }
+
+  console.log(downloaded, "dowloaded")
+  console.log(progress, "progress")
+
+  if(progress > 0){
+    console.log("loading")
   }
 
   return (

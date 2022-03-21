@@ -10,7 +10,7 @@ import { getDownloadURL } from "firebase/storage";
 
 export default function PostBar() {
 
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(undefined)
 
   const [postData, setpostData] = useState({
     Text:undefined,
@@ -61,7 +61,8 @@ export default function PostBar() {
       const image = downloaded;
      
       setpostData({...postData, Image:image })
-      setDownloaded(undefined)
+      setResponse(undefined)
+
     }
     else if (type === "Video") {
       
@@ -70,7 +71,7 @@ export default function PostBar() {
       const video = downloaded; 
 
       setpostData({...postData, Video:video})
-      setDownloaded(undefined)
+      setResponse(undefined)
   }}
 
   const SubmitHandler = (e)=>{

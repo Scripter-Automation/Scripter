@@ -5,12 +5,13 @@ import ImageIcon from '@mui/icons-material/Image';
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import SendIcon from '@mui/icons-material/Send';
 import ProgressModule from './ProgressModule';
-import { getStorage, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 
 export default function PostBar() {
+  const [response, setResponse] = useState(undefined)
 
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(undefined)
 
   const [postData, setpostData] = useState({
     Text:undefined,
@@ -18,59 +19,40 @@ export default function PostBar() {
     Video:undefined
 
   })
-  const [downloaded, setDownloaded] = useState(undefined)
 
   const Upload = async (image) => {
-
-
     const storage = getStorage();
     const referencia = ref(storage, `posts/${image.name}`);
 
-    const uploadTask = uploadBytesResumable(referencia, image);
+    setProgress("Subiendo Archivo")
 
-    uploadTask.on("state_changed", (snapshot) => {
-      // Observe state change events such as progress, pause, and resume
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-      switch (snapshot.state) {
-        case 'paused':
-          console.log('Upload is paused');
-          break;
-        case 'running':
-          console.log('Upload is running');
-          break;
-      }
-    },
-    (error) => {
-      // Handle unsuccessful uploads
-    }, ()=>{
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        setDownloaded(downloadURL)
-      }
-      )
-    })
-  };
-  
+    await uploadBytes(referencia, image);
+    var url = await getDownloadURL(referencia)
+    setResponse(url)
 
+    setProgress("El Archivo se ha subido exitosamente")
+
+};
 
   const HandleArchivo =  async (e, type)=>{
     if (type === "Image") {
       
       await Upload(e.target.files[0])
 
-      const image = downloaded;
+      const image = response
      
       setpostData({...postData, Image:image })
-      setDownloaded(undefined)
+      setResponse(undefined)
+
     }
     else if (type === "Video") {
       
       await Upload(e.target.files[0])
 
-      const video = downloaded; 
+      const video = response 
 
       setpostData({...postData, Video:video})
-      setDownloaded(undefined)
+      setResponse(undefined)
   }}
 
   const SubmitHandler = (e)=>{
@@ -80,6 +62,7 @@ export default function PostBar() {
    
     
   }
+
 
   return (
 
