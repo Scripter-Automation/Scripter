@@ -2,7 +2,6 @@
 /* globals window */
 import React, { useEffect, useState } from 'react'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import firebase from 'firebase/app'
 import { EmailAuthProvider, getAuth, GoogleAuthProvider } from "firebase/auth";
 import { AuthAction, withAuthUser } from 'next-firebase-auth';
 import { GenerateRole, getRole } from '../Firebase/FBRoles';

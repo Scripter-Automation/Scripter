@@ -1,45 +1,131 @@
 import { Button, Card, Container, Grid, TextField } from '@mui/material'
-import React from 'react'
+import React, {useState} from 'react'
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ImageIcon from '@mui/icons-material/Image';
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import SendIcon from '@mui/icons-material/Send';
+import ProgressModule from './ProgressModule';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
 
 export default function PostBar() {
+  const [response, setResponse] = useState(undefined)
+
+  const [progress, setProgress] = useState(undefined)
+
+  const [postData, setpostData] = useState({
+    Text:undefined,
+    Image: undefined,
+    Video:undefined
+
+  })
+
+  const Upload = async (image) => {
+    const storage = getStorage();
+    const referencia = ref(storage, `posts/${image.name}`);
+
+    setProgress("Subiendo Archivo")
+
+    await uploadBytes(referencia, image);
+    var url = await getDownloadURL(referencia)
+    setResponse(url)
+
+    setProgress("El Archivo se ha subido exitosamente")
+
+};
+
+  const HandleArchivo =  async (e, type)=>{
+    if (type === "Image") {
+      
+      await Upload(e.target.files[0])
+
+      const image = response
+     
+      setpostData({...postData, Image:image })
+      setResponse(undefined)
+
+    }
+    else if (type === "Video") {
+      
+      await Upload(e.target.files[0])
+
+      const video = response 
+
+      setpostData({...postData, Video:video})
+      setResponse(undefined)
+  }}
+
+  const SubmitHandler = (e)=>{
+    e.preventDefault()
+    console.log("viendo la data",postData)
+
+   
+    
+  }
+
+
   return (
+
+    <>
+    <ProgressModule progress={progress} setProgress={setProgress}></ProgressModule>
     <Card >
+      <form onSubmit={SubmitHandler}>
     <Container sx={{mt:2, mb:2}}>
     <Grid container >
       <Grid item xs={12}>
-        <TextField
-        variant='filled'
-        multiline
-        maxRows={4}
-        fullWidth
-        placeholder='Comenta tus ideas'
-        />
+
+            <TextField
+            value={postData.Text}
+            name="Text"
+            variant='filled'
+            multiline
+            maxRows={4}
+            fullWidth
+            placeholder='Comenta tus ideas'
+            onChange={(e)=>{setpostData({...postData, Text: e.target.value,})}}
+            />
+
       </Grid>
     
-      <Grid sx={{mt:2}} xs={12} item container columnSpacing={11}
+      <Grid  xs={12} item container display="flex" flexWrap={true} justifyContent="space-between"
       >
-        <Grid item xs={3}>
+        <Grid sx={{mt:2}} item>
           <Button variant="contained" startIcon={<AssignmentIcon/>}>Articulo</Button>
         </Grid>
-        <Grid item xs={3}>
-          <Button variant="contained" startIcon={<ImageIcon/>}>Imagen</Button>
+        <Grid sx={{mt:2}} item>
+          <Button type="file" variant="contained" component="label" startIcon={<ImageIcon/>}>   
+          <input
+           type="file"
+           accept='image/*'
+          hidden
+          onChange={(e)=>HandleArchivo(e,"Image")}
+           />
+          Imagen
+          </Button>
           
         </Grid>
-        <Grid item xs={3}>
-          <Button variant="contained" startIcon={<OndemandVideoIcon/>}>Video</Button>
+        <Grid  sx={{mt:2}} item>
+          <Button variant="contained"  component="label" startIcon={<OndemandVideoIcon/>}>
+          <input
+           type="file"
+           accept='video/*'
+          hidden
+          onChange={(e)=> HandleArchivo(e,"Video")}
+           />
+            
+            Video</Button>
           
         </Grid>
-        <Grid item xs={3}>
-          <Button variant="contained" startIcon={<SendIcon/>}>Publicar</Button>
+        <Grid sx={{mt:2}} item>
+
+          <Button variant="contained" type="submit" startIcon={<SendIcon/>}>Publicar</Button>
           
         </Grid>
       </Grid>
     </Grid>
     </Container>
+    </form>
     </Card>
+    </>
   )
 }

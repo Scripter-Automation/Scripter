@@ -27,7 +27,7 @@ const initAuth = () => {
     firebaseClientInitConfig: {
       apiKey: 'AIzaSyDiU-tDmlQXirEsvKLD05lZpbwlvFF2VWQ', // required
       authDomain: 'scripter-550c0.firebaseapp.com',
-
+      storageBucket: "scripter-550c0.appspot.com",
       projectId: 'scripter-550c0',
     },
     cookies: {
