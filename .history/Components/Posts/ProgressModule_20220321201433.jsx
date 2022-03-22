@@ -33,7 +33,7 @@ export default function ProgressModule(props) {
         <Typography>Tu archivo se esta cargando</Typography>
         <Typography>{Math.round(props.progress)}%</Typography>
         <CircularProgress />
-        {props.progress === 100 ? < Button onClick={()=>{props.setProgress(0)}} sx variant="contained">Ok</Button> : null }
+        {props.progress === 100 ? < Button onClick={()=>{props.SetProgress(0)}} sx variant="contained">Ok</Button> : null }
         </Box>
         </Modal>
     )

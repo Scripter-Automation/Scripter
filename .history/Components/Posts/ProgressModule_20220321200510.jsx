@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal, Typography, CircularProgress, Button} from "@mui/material"
+import {Modal, Typography, LinearProgressWithLabel, Button} from "@mui/material"
 import { Box } from '@mui/system'
 
 
@@ -15,10 +15,6 @@ export default function ProgressModule(props) {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"center",
-        alignItems:"center",
       };
 
   
@@ -31,9 +27,8 @@ export default function ProgressModule(props) {
         >
         <Box sx={style}>
         <Typography>Tu archivo se esta cargando</Typography>
-        <Typography>{Math.round(props.progress)}%</Typography>
-        <CircularProgress />
-        {props.progress === 100 ? < Button onClick={()=>{props.setProgress(0)}} sx variant="contained">Ok</Button> : null }
+        <LinearProgressWithLabel value={toString(Math.floor(props.progress))} />
+
         </Box>
         </Modal>
     )

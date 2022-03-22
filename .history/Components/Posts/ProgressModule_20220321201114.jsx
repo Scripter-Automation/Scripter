@@ -17,8 +17,7 @@ export default function ProgressModule(props) {
         p: 4,
         display:"flex",
         flexDirection:"column",
-        justifyContent:"center",
-        alignItems:"center",
+        justifyContent:"center"
       };
 
   
@@ -33,7 +32,7 @@ export default function ProgressModule(props) {
         <Typography>Tu archivo se esta cargando</Typography>
         <Typography>{Math.round(props.progress)}%</Typography>
         <CircularProgress />
-        {props.progress === 100 ? < Button onClick={()=>{props.setProgress(0)}} sx variant="contained">Ok</Button> : null }
+        {props.progress === 100 ? < Button variant="contained">Ok</Button> : null }
         </Box>
         </Modal>
     )
